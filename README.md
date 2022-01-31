@@ -2,6 +2,8 @@
 
 [深入设计模式](https://refactoringguru.cn/design-patterns/book)
 
+[理论参考](http://c.biancheng.net/view/1371.html)
+
 简单工厂不属于23种设计模式之一，因为他违背了开闭原则，只能创建出简单的对象
 
 1. 创建型
