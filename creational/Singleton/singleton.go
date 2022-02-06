@@ -10,50 +10,21 @@
  */
 package Singleton
 
-import "sync"
-
-var (
-	p *Pet
-	once sync.Once
+import (
+	"fmt"
+	"sync"
 )
-//初始化的时候就构造出来
-func init() {
-	// golang中最重要的是这个
+
+type Singleton struct {
+	data string
+}
+var singleInstance *Singleton
+var once sync.Once
+
+func GetSingletonObj() *Singleton {
 	once.Do(func() {
-		p = &Pet{}
+		fmt.Println("Create Obj")
+		singleInstance = new(Singleton)
 	})
-}
-
-func GetInstance() *Pet {
-	return p
-}
-
-type Pet struct {
-	name string
-	age int
-	mux sync.Mutex
-}
-
-//为了线程安全，加个锁
-func (e *Pet) SetName(name string) {
-	e.mux.Lock()
-	defer e.mux.Unlock()
-
-	e.name = name
-}
-// 这个地方读的地方尽量不要加锁，性能会高些，这里是单例
-func (e *Pet) GetName() string {
-	e.mux.Lock()
-	defer e.mux.Unlock()
-	return e.name
-}
-func (e *Pet) IncrementAge() {
-	e.mux.Lock()
-	defer e.mux.Unlock()
-	e.age++
-}
-func (e *Pet) GetAge() int {
-	e.mux.Lock()
-	defer e.mux.Unlock()
-	return e.age
+	return singleInstance
 }

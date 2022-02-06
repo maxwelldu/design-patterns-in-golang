@@ -4,25 +4,18 @@ import (
 	"fmt"
 	"sync"
 	"testing"
+	"unsafe"
 )
 
-func TestGetInstance(t *testing.T) {
+func TestGetSingletonObj(t *testing.T) {
 	wg := sync.WaitGroup{}
-	wg.Add(200)
-
-	for i := 0; i < 100; i++ {
+	for i := 0; i < 10; i++ {
+		wg.Add(1)
 		go func() {
-			defer wg.Done()
-			IncrementAge1()
-		}()
-		go func() {
-			defer wg.Done()
-			IncrementAge2()
+			obj := GetSingletonObj()
+			fmt.Printf("%X\n", unsafe.Pointer(obj))
+			wg.Done()
 		}()
 	}
 	wg.Wait()
-
-	p := GetInstance()
-	age := p.GetAge()
-	fmt.Println(age)
 }
