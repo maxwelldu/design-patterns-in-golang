@@ -21,6 +21,8 @@ type Singleton struct {
 var singleInstance *Singleton
 var once sync.Once
 
+// 在init方法中初始化是非懒汉式的
+// 这个实现是懒汉式，线程安全的
 func GetSingletonObj() *Singleton {
 	once.Do(func() {
 		fmt.Println("Create Obj")
